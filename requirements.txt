@@ -3,4 +3,4 @@ flask-cors
 pillow
 numpy
 gunicorn
-tensorflow-gpu==2.14.0
+tensorflow
