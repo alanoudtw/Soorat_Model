@@ -4,18 +4,15 @@ from PIL import Image
 import io
 import numpy as np
 import tensorflow as tf
-import os
-
-# Force TensorFlow to use CPU
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend integration
 
 # Load the trained CNN model
-MODEL_PATH = os.getenv("MODEL_PATH", "./example_for_api_model.h5")
-model = tf.keras.models.load_model(MODEL_PATH, compile=False)
+# For Colab: Use the Colab file path
+MODEL_PATH = "/content/drive/MyDrive/example_for_api_model.h5"
+model = tf.keras.models.load_model(MODEL_PATH)
 
 def preprocess_image(image):
     """Preprocess the uploaded image to match the model's input format."""
@@ -32,7 +29,6 @@ def predict():
 
     try:
         file = request.files['file']
-        print(f"Received file: {file.filename}")
         image = Image.open(io.BytesIO(file.read())).convert('RGB')  # Ensure 3-channel image
         image = preprocess_image(image)
 
@@ -51,5 +47,5 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    # For Colab: Run Flask app for testing (use ngrok if external access is needed)
+    app.run(port=5000, debug=True)
