@@ -2,8 +2,8 @@ Flask==2.2.3
 flask_cors==5.0.1
 Pillow==9.0.1
 numpy>=1.23.5,<2.0.0
-tensorflow==2.9.0  # Try an older version
-keras==2.9.0  # Match Keras with TensorFlow
+tensorflow==2.15.1  # Compatible with Python 3.11
+keras==2.15.1
 gunicorn==20.1.0
 werkzeug==2.2.3
 h5py
