@@ -1,5 +1,5 @@
-Flask==2.3.3
-Flask-Cors==3.0.10
-pillow==9.5.0
-numpy==1.24.4
-tensorflow==2.13.0
+Flask
+Flask-Cors
+pillow
+numpy
+tensorflow
