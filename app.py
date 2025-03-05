@@ -4,14 +4,22 @@ from PIL import Image
 import io
 import numpy as np
 import tensorflow as tf
+import gc  # Garbage collection
+
+# Optimize TensorFlow Memory Usage
+physical_devices = tf.config.experimental.list_physical_devices('GPU')
+if physical_devices:
+    try:
+        tf.config.experimental.set_memory_growth(physical_devices[0], True)
+    except RuntimeError as e:
+        print(f"Error setting memory growth: {e}")
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend integration
 
 # Load the trained CNN model
-# For Colab: Use the Colab file path
-MODEL_PATH = "/content/drive/MyDrive/example_for_api_model.h5"
+MODEL_PATH = "example_for_api_model.h5"  # Adjust path for Render
 model = tf.keras.models.load_model(MODEL_PATH)
 
 def preprocess_image(image):
@@ -20,6 +28,10 @@ def preprocess_image(image):
     image = np.array(image) / 255.0  # Normalize pixel values
     image = np.expand_dims(image, axis=0)  # Add batch dimension
     return image
+
+@app.route('/')
+def home():
+    return "Flask API is running!", 200
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -37,6 +49,9 @@ def predict():
         predicted_class = np.argmax(prediction)  # Get the class with highest probability
         confidence = float(np.max(prediction))  # Confidence score
 
+        # Free memory
+        gc.collect()
+
         return jsonify({
             "predicted_class": int(predicted_class),
             "confidence": confidence,
@@ -47,5 +62,4 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    # For Colab: Run Flask app for testing (use ngrok if external access is needed)
-    app.run(port=5000, debug=True)
+    app.run(host='0.0.0.0', port=10000, debug=False)  # Match Render's port
