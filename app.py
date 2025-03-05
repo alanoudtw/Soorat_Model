@@ -20,7 +20,7 @@ CORS(app)  # Enable CORS for frontend integration
 
 # Load the trained CNN model
 # For Colab: Use the Colab file path
-MODEL_PATH = "/content/drive/MyDrive/example_for_api_model.h5"
+MODEL_PATH = "./example_for_api_model.h5"
 model = tf.keras.models.load_model(MODEL_PATH)
 
 def preprocess_image(image):
