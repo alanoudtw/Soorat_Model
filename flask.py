@@ -7,8 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/1wMpLCVc7Lobsjcu0G2_DbTibOL3ncdby
 """
 
-!pip install flask-cors
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from PIL import Image
